@@ -9,27 +9,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
 import com.adamwads.models.Car;
 import com.google.gson.*;
 
 /**
- * A class implementing the brief given by Rentalcars.com for their technical test
+ * A class implementing part 1 of the brief given by Rentalcars.com for their technical test
  * @author Adam Wadsworth
  *
  */
-@Path("/vehicleList")
-public class Main {
+public class MainPart1 {
 	
 	private static String JSON_URL = "http://www.rentalcars.com/js/vehicles.json";
 	
-	private static List<Car> cars;
-	public static Map<String, String> CAR_TYPE_SPEC;
-	public static Map<String, String> CAR_DOORS_TYPE_SPEC;
-	public static Map<String, String> CAR_TRANSMISSION_SPEC;
-	public static Map<String, String> CAR_FUEL_AC_SPEC;
+	protected static List<Car> cars;
+	
+	protected static Map<String, String> CAR_TYPE_SPEC;
+	protected static Map<String, String> CAR_DOORS_TYPE_SPEC;
+	protected static Map<String, String> CAR_TRANSMISSION_SPEC;
+	protected static Map<String, String> CAR_FUEL_AC_SPEC;
 	
 	//Get methods used in testing
 	public Map<String, String> getCAR_TYPE_SPEC() {
@@ -48,9 +45,17 @@ public class Main {
 		return CAR_FUEL_AC_SPEC;
 	}
 	
-	public Main() {
+	public MainPart1() {
 		cars = getListOfCars();
 		populateCarSpecification();
+	}
+	
+	public static void main(String[] args) {
+		MainPart1 main = new MainPart1();
+		main.printPriceOrder();
+		main.printSpecification();
+		main.printHighestRatedSupplier();
+		main.printVehicleScores();
 	}
 	
 	/**
@@ -58,7 +63,7 @@ public class Main {
 	 * and then returns a list of the cars as POJOs
 	 * @return	A list of cars as Car objects
 	 */
-	private List<Car> getListOfCars() {		
+	public List<Car> getListOfCars() {		
 		Gson gson = new Gson();
 		try {
 			URL url = new URL(JSON_URL);
@@ -73,37 +78,31 @@ public class Main {
 	}
 	
 	/**
-	 * Returns the list of cars in price order displayed in a HTML table
-	 * (I'm aware that this may not be 100% "RESTful" but it is easier to read and seemed the best option for the brief)
-	 * @return The list of cars in price order
+	 * Prints the list of cars ordered by price to the console 
+	 * @return null so that the inherited classes function correctly
 	 */
-	@GET
-	@Path("/printPriceOrder")
 	public String printPriceOrder() {
 		if(!cars.isEmpty()){
 			Collections.sort(cars, Car.getPriceComparator());
 			int i = 1;
-			String output = "<table><tr><th>No.</th><th>Car Name</th><th>Price</th></tr>";
 			for (Car car : cars) {
-				output = output + String.format("<tr><td>%d</td><td>%s</td><td>%.2f</td></tr>", i, car.getName(), car.getPrice());
+				System.out.format("%4d -- %s -- %.2f%n", i, car.getName(), car.getPrice());
 				i++;
 			}
-			return output + "</table>";
+			System.out.format("%n");
 		} else {
-			return "The .json file could not be found";
+			System.out.println("List of cars couldnt be found");
 		}
+		return null;
 	}
 	
 	/**
-	 * Returns the list of cars and their specifications displayed in a HTML table
-	 * @return The list of cars and their specifications
+	 * Returns the list of cars and their specifications printed to the console
+	 * @return null so that the inherited classes function correctly
 	 */
-	@GET
-	@Path("/printSpecification")
 	public String printSpecification() {
 		if(!cars.isEmpty()){
 			int i = 1;
-			String output = "<table><tr><th>No.</th><th>Car Name</th><th>Sipp</th><th>Car Type</th><th>Doors/2nd Type</th><th>Transmission</th><th>Fuel Type</th><th>Air Con</th></tr>";
 			for (Car car : cars) {
 				String type = car.getCarType(CAR_TYPE_SPEC);
 				String doorsType = car.getCarDoorsType(CAR_DOORS_TYPE_SPEC);
@@ -111,21 +110,20 @@ public class Main {
 				String fuelAndAirCon = car.getFuelAndAirCon(CAR_FUEL_AC_SPEC);
 				String fuel = fuelAndAirCon.split(",")[0];
 				String airCon = fuelAndAirCon.split(",")[1];
-				output = output + String.format("<tr><td>%4d</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", i, car.getName(), car.getSipp(), type, doorsType, transmission, fuel, airCon);
+				System.out.format("%4d -- %s -- %s -- %s -- %s -- %s -- %s -- %s%n", i, car.getName(), car.getSipp(), type, doorsType, transmission, fuel, airCon);
 				i++;
 			}
-			return output + "</table>";
+			System.out.format("%n");
 		} else {
-			return "The .json file could not be found";
+			System.out.println("List of cars couldnt be found");
 		}
+		return null;
 	}
 	
 	/**
-	 * Returns a list of the highest rated supplier for each car type
-	 * @return The highest rated supplier for each car type
+	 * Prints a list of the highest rated supplier for each car type in console
+	 * @return null so that the inherited classes function correctly
 	 */
-	@GET
-	@Path("/printHighestRatedSupplier")
 	public String printHighestRatedSupplier() {
 		if(!cars.isEmpty()){
 			List<Car> highestRatings = new ArrayList<Car>();
@@ -143,42 +141,40 @@ public class Main {
 			}
 			
 			int i = 1;
-			String output = "<table><tr><th>No.</th><th>Car Name</th><th>Type</th><th>Supplier</th><th>Rating</th></tr>";
 			for (Car car : highestRatings) {
-				output = output + String.format("<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td><td>%1.1f</td></tr>", i, car.getName(), car.getCarType(CAR_TYPE_SPEC), car.getSupplier(), car.getRating());
+				System.out.format("%4d -- %s -- %s -- %s -- %1.1f%n", i, car.getName(), car.getCarType(CAR_TYPE_SPEC), car.getSupplier(), car.getRating());
 				i++;
 			}
-			return output + "</table>";
+			System.out.format("%n");
 		} else {
-			return "The .json file could not be found";
+			System.out.println("List of cars couldnt be found");
 		}
+		return null;
 	}
 	
 	/**
-	 * Returns the list of cars and their associated vehicle scores in descending order
-	 * @return The list of cars and their associated vehicle score in descending order
+	 * Prints the list of cars and their associated vehicle scores in descending order to the console
+	 * @return null so that the inherited classes function correctly
 	 */
-	@GET
-	@Path("/printVehicleScores")	
 	public String printVehicleScores() {
 		if(!cars.isEmpty()){
 			Collections.sort(cars, Car.getSumOfScoresComparator(CAR_TRANSMISSION_SPEC));
 			int i = 1;
-			String output = "<table><tr><th>No.</th><th>Car Name</th><th>Vehicle Score</th><th>Rating</th><th>Sum of Scores</th></tr>";
 			for (Car car : cars) {
-				output = output + String.format("<tr><td>%d</td><td>%s</td><td>%d</td><td>%.1f</td><td>%.1f</td></tr>", i, car.getName(), car.getVehicleScore(CAR_TRANSMISSION_SPEC), car.getRating(), car.getVehicleScorePlusSupplierRating(CAR_TRANSMISSION_SPEC));
+				System.out.format("%4d -- %s -- %d -- %.1f -- %.1f%n", i, car.getName(), car.getVehicleScore(CAR_TRANSMISSION_SPEC), car.getRating(), car.getVehicleScorePlusSupplierRating(CAR_TRANSMISSION_SPEC));
 				i++;
 			}
-			return output + "</table>";
+			System.out.format("%n");
 		} else {
-			return "The .json file could not be found";
+			System.out.println("List of cars couldnt be found");
 		}
+		return null;
 	}
 	
 	/**
 	 * Populates 4 hashmaps that convert the sipp value into the text value associated with that sipp value
 	 */
-	private void populateCarSpecification() {
+	protected void populateCarSpecification() {
 		
 		//1st Letter of the sipp 
 		CAR_TYPE_SPEC = new HashMap<>();

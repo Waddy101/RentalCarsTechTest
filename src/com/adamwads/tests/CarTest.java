@@ -3,13 +3,13 @@ package com.adamwads.tests;
 import org.junit.Test;
 
 import com.adamwads.models.Car;
-import com.adamwads.classes.Main;
+import com.adamwads.classes.MainPart2;
 
 import static org.junit.Assert.assertEquals;
 
 public class CarTest {
 	
-	Main main = new Main();
+	MainPart2 main = new MainPart2();
 	
 	//Testing getCarType() method
     @Test
