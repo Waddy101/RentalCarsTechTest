@@ -17,13 +17,13 @@ Use the below REST URLs when the .war is hosted on an Apache Tomcat v9.0 server 
 # REST URLs
 
 To print the list of vehicles ordered by price use the URL
-[server address]/RentalCarsTechTest/vehicleList/printPriceOrder
+[server address]/RentalCarsTechTest/vehicleList/priceOrder
 
 To print the list of vehicles and their specifications use the URL
-[server address]/RentalCarsTechTest/vehicleList/printSpecification
+[server address]/RentalCarsTechTest/vehicleList/specification
 
 To print the list of highest rated suppliers per vehicle type use the URL
-[server address]/RentalCarsTechTest/vehicleList/printHighestRatedSupplier
+[server address]/RentalCarsTechTest/vehicleList/highestRatedSupplier
 
 To print the list of vehicles and their scores based on their specification use the URL
-[server address]/RentalCarsTechTest/vehicleList/printVehicleScores
+[server address]/RentalCarsTechTest/vehicleList/vehicleScores
