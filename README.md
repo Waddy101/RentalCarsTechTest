@@ -12,7 +12,7 @@ To run part 1 run the MainPart1.java class that contains code to output the data
 
 # Part 2 
 
-Use the below REST URLs when the .war is hosted on a Tomcat server to access the data viewed as HTML, whilst not strictly RESTful because it's HTML and not easy parseable by other programs it is the easiest way to present the data in a human readable way
+Use the below REST URLs when the .war is hosted on an Apache Tomcat v9.0 server to access the data viewed as HTML, whilst not strictly RESTful because it's HTML and not easy parseable by other programs it is the easiest way to present the data in a human readable way
 
 # REST URLs
 
