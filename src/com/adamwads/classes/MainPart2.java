@@ -15,19 +15,19 @@ import com.adamwads.models.Car;
  */
 @Path("/vehicleList")
 public class MainPart2 extends MainPart1 {
-			
+
 	public MainPart2() {
 		cars = getListOfCars();
 		populateCarSpecification();
 	}
-		
+
 	/**
 	 * Returns the list of cars in price order displayed in a HTML table
 	 * (I'm aware that this may not be 100% "RESTful" but it is easier to read and seemed the best option for the brief)
 	 * @return The list of cars in price order
 	 */
 	@GET
-	@Path("/printPriceOrder")
+	@Path("/priceOrder")
 	@Override
 	public String printPriceOrder() {
 		if(!cars.isEmpty()){
@@ -43,13 +43,13 @@ public class MainPart2 extends MainPart1 {
 			return "The .json file could not be found";
 		}
 	}
-	
+
 	/**
 	 * Returns the list of cars and their specifications displayed in a HTML table
 	 * @return The list of cars and their specifications
 	 */
 	@GET
-	@Path("/printSpecification")
+	@Path("/specification")
 	@Override
 	public String printSpecification() {
 		if(!cars.isEmpty()){
@@ -70,30 +70,30 @@ public class MainPart2 extends MainPart1 {
 			return "The .json file could not be found";
 		}
 	}
-	
+
 	/**
 	 * Returns a list of the highest rated supplier for each car type
 	 * @return The highest rated supplier for each car type
 	 */
 	@GET
-	@Path("/printHighestRatedSupplier")
+	@Path("/highestRatedSupplier")
 	@Override
 	public String printHighestRatedSupplier() {
 		if(!cars.isEmpty()){
 			List<Car> highestRatings = new ArrayList<Car>();
 			List<Car> tempList = new ArrayList<Car>();
-			
+
 			for (String type : CAR_TYPE_SPEC.keySet()) {
 				for (Car car: cars) {
 					if (car.getSipp().substring(0,1).equals(type)) {
 						tempList.add(car);
-					}	
+					}
 				}
 				Collections.sort(tempList, Car.getRatingComparator());
 				if(!tempList.isEmpty()) highestRatings.add(tempList.get(0));
 				tempList.clear();
 			}
-			
+
 			int i = 1;
 			String output = "<table><tr><th>No.</th><th>Car Name</th><th>Type</th><th>Supplier</th><th>Rating</th></tr>";
 			for (Car car : highestRatings) {
@@ -105,13 +105,13 @@ public class MainPart2 extends MainPart1 {
 			return "The .json file could not be found";
 		}
 	}
-	
+
 	/**
 	 * Returns the list of cars and their associated vehicle scores in descending order
 	 * @return The list of cars and their associated vehicle score in descending order
 	 */
 	@GET
-	@Path("/printVehicleScores")	
+	@Path("/vehicleScores")
 	@Override
 	public String printVehicleScores() {
 		if(!cars.isEmpty()){
@@ -127,5 +127,5 @@ public class MainPart2 extends MainPart1 {
 			return "The .json file could not be found";
 		}
 	}
-	
+
 }
